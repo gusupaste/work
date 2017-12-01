@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+  
   <!-- 引入样式 -->
   <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
   <link rel="stylesheet" href="./css/base.css">
@@ -19,19 +20,30 @@
               <div class='classTime'> <p> 第一课时-友谊</p></div>
               <div class="totalEx" v-for = "(item , index) in data" :key = 'item.id'>
               <div class='mdlEx' >
-                <p>{{index+1}}、{{item.showType}} ({{item.exeNumber}}题)</p>
+                <p>{{index+1 | getB }} 、{{item.showType}} ({{item.exeNumber}}题)</p>
                 <div class="smEx" >
                   <div class='choiceTitle' v-for = '(inItem , in_index) in item.exercises'>
                    <span> {{inItem.id}}.</span>
                    <span v-html =inItem.scene></span>
-                  <div v-for = '(smQ , smQ_index) in inItem.exercises'> 
-                    <span>{{smQ.id}}</span>
-                    <span v-html = smQ.content></span>
+                  <div  v-for = '(smQ , smQ_index) in inItem.exercises'> 
+                    <div class="exam">
+                      <span>{{smQ.id}}</span>
+                      <span v-html=smQ.content></span>
+                    </div>
+                    <div class='answer'>
+                      <p>
+                        <span>学生答案:</span>
+                        <span v-html=smQ.answer></span>
+                      </p>
+                      <p>
+                        <span>正确答案:</span>
+                      <span v-html = smQ.analysis></span>
+                      </p>
+                    </div>
                     <div v-for = '(cho , cho_index) in smQ.exerciseSelections'>
                       <span>{{cho.name}}</span>
                       <span v-html = cho.content></span>
                     </div>
-                   
                   </div>
                   </div>
                 </div>
@@ -47,6 +59,7 @@
   <!-- vue-resource -->
   <script src='./node_modules/vue-resource/dist/vue-resource.min.js'></script>
   <script>
+   
      var vue = new Vue({
         el: '#app', 
         data : {
@@ -278,8 +291,81 @@
         },
         methods : {
           getEx() {
-            this.$http.get("http://owiju9mp2.bkt.clouddn.com/Fi3mW0e4nf-vKV0aqrgarzVtYXFs")
+            this.$http.get('http://120.55.45.184:3002/api/teacher/all/232/190')
+            .then(res => {
+                const body = res.body
+                this.isLoaded = true
+                console.log(body)
+                if (body.status === 0) {
+                  this.info = body.message[0]
+                }
+             
+            })
           }
+        },
+        filters :{
+           getB(Num) {
+                for(i = Num.length - 1; i >= 0; i--) {
+        Num = Num.replace(" ", "")//替换Num中的空格
+                }
+            if (isNaN(Num)) { //验证输入的字符是否为数字
+              //alert("请检查小写金额是否正确");
+              return;
+            }
+            //字符处理完毕后开始转换，采用前后两部分分别转换
+            part = String(Num).split(".");
+            newchar = "";
+            //小数点前进行转化
+            for (i = part[0].length - 1; i >= 0; i--) {
+              if (part[0].length > 10) {
+                //alert("位数过大，无法计算");
+                return "";
+              }//若数量超过拾亿单位，提示
+              tmpnewchar = ""
+              perchar = part[0].charAt(i);
+              switch (perchar) {
+                case "0": tmpnewchar = "零" + tmpnewchar; break;
+                case "1": tmpnewchar = "一" + tmpnewchar; break;
+                case "2": tmpnewchar = "二" + tmpnewchar; break;
+                case "3": tmpnewchar = "三" + tmpnewchar; break;
+                case "4": tmpnewchar = "四" + tmpnewchar; break;
+                case "5": tmpnewchar = "五" + tmpnewchar; break;
+                case "6": tmpnewchar = "六" + tmpnewchar; break;
+                case "7": tmpnewchar = "七" + tmpnewchar; break;
+                case "8": tmpnewchar = "八" + tmpnewchar; break;
+                case "9": tmpnewchar = "九" + tmpnewchar; break;
+              }
+              switch (part[0].length - i - 1) {
+                case 0: tmpnewchar = tmpnewchar; break;
+                case 1: if (perchar != 0) tmpnewchar = tmpnewchar + "十"; break;
+                case 2: if (perchar != 0) tmpnewchar = tmpnewchar + "百"; break;
+                case 3: if (perchar != 0) tmpnewchar = tmpnewchar + "千"; break;
+                case 4: tmpnewchar = tmpnewchar + "万"; break;
+                case 5: if (perchar != 0) tmpnewchar = tmpnewchar + "十"; break;
+                case 6: if (perchar != 0) tmpnewchar = tmpnewchar + "百"; break;
+                case 7: if (perchar != 0) tmpnewchar = tmpnewchar + "千"; break;
+                case 8: tmpnewchar = tmpnewchar + "亿"; break;
+                case 9: tmpnewchar = tmpnewchar + "十"; break;
+              }
+              newchar = tmpnewchar + newchar;
+            }
+            //替换所有无用汉字，直到没有此类无用的数字为止
+            while (newchar.search("零零") != -1 || newchar.search("零亿") != -1 || newchar.search("亿万") != -1 || newchar.search("零万") != -1) {
+              newchar = newchar.replace("零亿", "亿");
+              newchar = newchar.replace("亿万", "亿");
+              newchar = newchar.replace("零万", "万");
+              newchar = newchar.replace("零零", "零");
+            }
+            //替换以“一十”开头的，为“十”
+            if (newchar.indexOf("一十") == 0) {
+              newchar = newchar.substr(1);
+            }
+            //替换以“零”结尾的，为“”
+            if (newchar.lastIndexOf("零") == newchar.length - 1) {
+              newchar = newchar.substr(0, newchar.length - 1);
+            }
+            return newchar;
+}
         }
         
      })
@@ -287,7 +373,7 @@
   <style >
     img {
       width: 100%;
-      height: 100px;
+      height: 100%;
     }
       .mint-header {
       height:3rem;
@@ -300,12 +386,15 @@
     font-size: 1rem;
 }
    section {
-     padding: 1rem;
-     font-size: 1rem;
+     padding: 1.5rem;
+     font-size: 0.8rem;
    }
    section .classTime {
      text-align: center;
      
+   }
+   .totalEx {
+     margin-top: 1rem;
    }
    .mdlEx {
      border-bottom: 1px solid #CCC;
@@ -313,7 +402,7 @@
  
     .smEx {
       margin-top: 0.5rem;
-      font-size: 1rem;
+      font-size: 0.8rem;
     }
     .smEx * {
       margin-bottom:0.5rem;
@@ -321,5 +410,6 @@
     .askAns {
       margin-top: 1rem;
     }
+  
   </style>
 </html>
