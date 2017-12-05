@@ -60,11 +60,11 @@
         </section>
   </div>
 </body>
-  <!-- 先引入 Vue -->
+  <!-- 引入 Vue -->
   <script src="./node_modules/vue/dist/vue.min.js"></script>
-  <!-- 引入组件库 -->
+  <!-- 引入mint-ui组件库 -->
   <script src="./node_modules/mint-ui/lib/index.js"></script>
-  <!-- axios -->
+  <!-- 引入axios -->
   <script src='./node_modules/axios/dist/axios.min.js'></script>
   <script>
     
@@ -72,20 +72,19 @@
         el: '#app',
         data () { 
          return { 
-           data:{}
-           
-                  }
+           data: {}
+                }
         },
-        created() {
-          this.getExercise()
+        created () {
+          this.getExercise ()
         },
         methods : {
                getExercise() {
              axios({
-               url:`api/teacher/all/232/190`,
-               method:'get',
-               headers:{
-                 Authorization:'eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBdCI6MTUxMjk2Mzg1NjExNiwiZXhwIjoxNTEyOTYzODU2LCJ1c2VySWQiOjQzNCwiY3JlYXRlQXQiOjE1MTIzNTkwNTYxMTZ9.otEQObAXqdUXhjNQUZhy-OL4chj_rVt-7Y1zNPuFihA'
+               url: `api/teacher/all/232/190`,
+               method: 'get',
+               headers: {
+                 Authorization: 'eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBdCI6MTUxMjk2Mzg1NjExNiwiZXhwIjoxNTEyOTYzODU2LCJ1c2VySWQiOjQzNCwiY3JlYXRlQXQiOjE1MTIzNTkwNTYxMTZ9.otEQObAXqdUXhjNQUZhy-OL4chj_rVt-7Y1zNPuFihA'
                }
               })
                    .then( res => {
@@ -171,9 +170,9 @@
       height: 50%;
     }
       .mint-header {
-      height:3rem;
+      height: 3rem;
       background-color: #13D3D7;
-      font-size:1rem;
+      font-size: 1rem;
       border-bottom: 0.125rem #EAEAEA solid;
    }
    .mintui-back:before {
@@ -200,7 +199,7 @@
       font-size: 0.8rem;
     }
     .smEx * {
-      margin-bottom:0.5rem;
+      margin-bottom: 0.5rem;
     }
     .askAns {
       margin-top: 1rem;
