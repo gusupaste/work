@@ -17,7 +17,7 @@
                 <mt-button  slot="right"></mt-button>
         </mt-header>
         <section>
-          <!-- 课时 -->
+              <!-- 课时 -->
               <div class='classTime'> <p> 第一课时-友谊</p></div>
               <!-- 大题型 -->
               <div class="totalEx" v-for = "(item , index) in data" :key = 'item.id'>
@@ -82,7 +82,7 @@
         methods : {
                getExercise() {
              axios({
-               url:'api/teacher/all/232/190',
+               url:`api/teacher/all/232/190`,
                method:'get',
                headers:{
                  Authorization:'eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBdCI6MTUxMjk2Mzg1NjExNiwiZXhwIjoxNTEyOTYzODU2LCJ1c2VySWQiOjQzNCwiY3JlYXRlQXQiOjE1MTIzNTkwNTYxMTZ9.otEQObAXqdUXhjNQUZhy-OL4chj_rVt-7Y1zNPuFihA'
