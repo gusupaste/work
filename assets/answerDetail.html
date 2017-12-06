@@ -21,14 +21,14 @@
               <!-- 大题型 -->
               <div class="totalEx" v-for = "(item , index) in data" :key = 'item.id'>
                 <div class='mdlEx' >
-                  <p>{{index+1 | getB }} 、{{item.showType}} ({{item.exeNumber}}题)</p>
+                  <p>{{index+1 | getB }} 、{{item.showType}} ( {{item.exeNumber}} 题 )</p>
                   <div class="smEx" >
                     <!-- 题目 -->
                     <div class='choiceTitle' v-for = '(inItem , in_index) in item.exercises' >
                     <span> {{inItem.id}}.</span>
-                    <span v-html =inItem.scene></span>
+                    <span v-html = inItem.scene></span>
                     <!-- 小题 -->
-                    <div  v-for = '(smQ , smQ_index) in inItem.exercises'> 
+                    <div class="innerEx" v-for = '(smQ , smQ_index) in inItem.exercises'> 
                       <div class="exam">
                         <span>{{smQ.id}}.</span>
                         <span v-html = smQ.content></span>
@@ -48,8 +48,12 @@
                           <p>
                             <span>学生答案:</span>
                             <img :src ="pic.studentAnswer" alt="">
+                            <!-- 得分 -->                           
                           </p>
-                        </div>
+                        </div>                       
+                      </div>
+                      <div class='getScore'>
+                        <p>{{smQ.score}}/{{smQ.points}}分</p>
                       </div>
                     </div>
                     </div>
@@ -59,26 +63,29 @@
         </section>
   </div>
 </body>
- 
   <script src="./node_modules/vue/dist/vue.min.js"></script>
   <script src="./node_modules/mint-ui/lib/index.js"></script>
   <script src='./node_modules/axios/dist/axios.min.js'></script>
   <script>
+   
     
      var vue = new Vue({
         el: '#app',
         data () { 
          return { 
-           data: {}
+           data: {},
+           practiceId:[232],
+           studentId:[190]
                 }
         },
         created () {
           this.getExercise ()
         },
         methods : {
-               getExercise() {
+               getExercise() { 
+                
              axios({
-               url: `api/teacher/all/235/190`,
+               url: `api/teacher/all/${this.practiceId}/${this.studentId}`,
                method: 'get',
                headers: {
                  Authorization: 'eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBdCI6MTUxMjk2Mzg1NjExNiwiZXhwIjoxNTEyOTYzODU2LCJ1c2VySWQiOjQzNCwiY3JlYXRlQXQiOjE1MTIzNTkwNTYxMTZ9.otEQObAXqdUXhjNQUZhy-OL4chj_rVt-7Y1zNPuFihA'
@@ -176,6 +183,7 @@
     content: "\E600";
     font-size: 1rem;
 }
+   
    section {
      padding: 1.5rem;
      font-size: 0.8rem;
@@ -198,9 +206,18 @@
     .smEx * {
       margin-bottom: 0.5rem;
     }
+    .innerEx {
+      position: relative;
+    }
     .askAns {
       margin-top: 1rem;
     }
-  
+    .getScore {
+      color: #D03E3E;
+      font-size: 1.5rem;
+      position: absolute;
+      right: 0;
+      bottom: 50%;
+    }
   </style>
 </html>

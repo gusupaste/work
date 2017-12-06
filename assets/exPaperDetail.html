@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <link rel="stylesheet" href="./node_modules/mint-ui/lib/style.min.css">
+    <link rel="stylesheet" href="./css/base.css">
+</head>
+
+<body>
+    <div id="app">
+        <mt-header>
+            <a to="/" slot="left">
+                <mt-button icon="back">试卷详情</mt-button>
+            </a>
+            <mt-button slot="right"></mt-button>
+        </mt-header>
+        <section >
+        <div v-for = '(item , index) in tests' :key = 'index'>
+               <p>{{item.type}}</p>          
+           <div>
+               <!-- 注意事项 -->
+               <!-- <div>
+                   <h5>注意事项</h5>
+                   <p>{{index}}、考试时长：{{item.totalTime}}分钟</p>
+                   <p>2、试卷分值：{{item.totalScore}}分</p>
+                   <p>3、考察范围：{{item.name}}</p>
+                   <p>4、{{item.otherRequire}}</p>
+               </div> -->
+               <!-- 表格 -->
+               <table>
+                   <thead>
+                       <td >题号</td>
+                       <td>一</td>
+                       <td>二</td>
+                       <td>三</td>
+                       <td>四</td>
+                       <td>五</td>
+                       <td>六</td>
+                       <td>总分</td>
+                   </thead>
+                   <tr>
+                       <td>得分</td>
+                       <td> </td>
+                       <td> </td>
+                       <td> </td>
+                       <td> </td>
+                       <td> </td>
+                       <td> </td>
+                       <td> </td>
+                   </tr>
+               </table>
+           </div>
+           <!-- 题目区域 -->
+
+        </div>
+        </section>
+    </div>
+</body>
+
+<script src="./node_modules/vue/dist/vue.min.js"></script>
+<script src="./node_modules/mint-ui/lib/index.js"></script>
+<script src='./node_modules/axios/dist/axios.min.js'></script>
+<script>
+    var vue = new Vue({
+        el:'#app',
+        data () {
+          return {
+              tests:{}
+          }
+        },
+        created () {
+            this.getExercises()
+        },
+        methods: {
+            getExercises () {
+                axios({
+                    url:'api/teacher/practice/1',
+                    method:'get',
+                    headers: {
+                        Authorization: 'eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBdCI6MTUxMzE0NjYxMjc5MSwiZXhwIjoxNTEzMTQ2NjEyLCJ1c2VySWQiOjQzNCwiY3JlYXRlQXQiOjE1MTI1NDE4MTI3OTF9.mhx5kOBLmGGbAH1034Dp_cU1ppUtAC628ui0X0MG5kE'
+                    }
+                }).then(res => {
+                    var _this = this
+                    if(res.status === 200) {
+                    _this.tests = res.data.data
+                    console.log(_this.tests.name)
+                    }
+                }) 
+            }
+        }
+    })
+</script>
+<style>
+    p {
+        line-height: 1.5rem;
+    }
+
+    img {
+        width: 50%;
+        height: 50%;
+    }
+    table {
+        margin-top: 1rem;
+        width: 80%;
+        border: 1px solid #EAEAEA;
+        border-collapse:collapse;
+    }
+    
+    td {
+       text-align: center; 
+       border:1px solid #EAEAEA;
+    }
+    tr {
+        height: 2rem;
+    }
+    
+    .mint-header {
+        height: 3rem;
+        background-color: #13D3D7;
+        font-size: 1rem;
+        border-bottom: 0.125rem #EAEAEA solid;
+    }
+
+    .mintui-back:before {
+        content: "\E600";
+        font-size: 1rem;
+    }
+
+    section {
+        padding: 1.5rem;
+        font-size: 0.8rem;
+    }
+
+    section .title {
+        text-align: center;
+    }
+
+    .totalEx {
+        margin-top: 1rem;
+    }
+
+    .mdlEx {
+        border-bottom: 1px solid #CCC;
+    }
+
+    .smEx {
+        margin-top: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    .smEx * {
+        margin-bottom: 0.5rem;
+    }
+
+    .askAns {
+        margin-top: 1rem;
+    }
+
+    .getScore {
+        color: #D03E3E;
+        font-size: 1.5rem;
+    }
+</style>
+
+</html>

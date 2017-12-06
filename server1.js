@@ -7,13 +7,13 @@ const proxy = httpProxy.createProxyServer({});
 const base_url = 'http://120.55.45.184:3002/';
 
 
-const port =  process.env.PORT || 2000;
+const port = process.env.PORT || 3000;
 const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', function response(req, res) {
-    res.sendFile(path.join(__dirname, 'assets/answerDetail.html'));
+    res.sendFile(path.join(__dirname, 'assets/exPaperDetail.html'));
 });
 
 app.use('/', express.static(__dirname + '/assets'));
