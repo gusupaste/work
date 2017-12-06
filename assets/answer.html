@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
   <meta http-equiv="Access-Control-Allow-Origin" content="*">
-  <!-- 引入样式 -->
   <link rel="stylesheet" href="./node_modules/mint-ui/lib/style.min.css">
   <link rel="stylesheet" href="./css/base.css">
 </head>
@@ -60,11 +59,9 @@
         </section>
   </div>
 </body>
-  <!-- 引入 Vue -->
+ 
   <script src="./node_modules/vue/dist/vue.min.js"></script>
-  <!-- 引入mint-ui组件库 -->
   <script src="./node_modules/mint-ui/lib/index.js"></script>
-  <!-- 引入axios -->
   <script src='./node_modules/axios/dist/axios.min.js'></script>
   <script>
     
@@ -81,7 +78,7 @@
         methods : {
                getExercise() {
              axios({
-               url: `api/teacher/all/232/190`,
+               url: `api/teacher/all/235/190`,
                method: 'get',
                headers: {
                  Authorization: 'eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBdCI6MTUxMjk2Mzg1NjExNiwiZXhwIjoxNTEyOTYzODU2LCJ1c2VySWQiOjQzNCwiY3JlYXRlQXQiOjE1MTIzNTkwNTYxMTZ9.otEQObAXqdUXhjNQUZhy-OL4chj_rVt-7Y1zNPuFihA'
@@ -90,14 +87,14 @@
                    .then( res => {
                      var _this = this
                      _this.data = res.data.data
-                   })
-                  
+                   }) 
           }
         },
+        //过滤器：数字改成中文
         filters :{
            getB(Num) {
                 for(i = Num.length - 1; i >= 0; i--) {
-        Num = Num.replace(" ", "")//替换Num中的空格
+        Num = Num.replace(" ", "")  //替换Num中的空格
                 }
             if (isNaN(Num)) { //验证输入的字符是否为数字
               //alert("请检查小写金额是否正确");
