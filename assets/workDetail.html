@@ -17,84 +17,94 @@
             </a>
             <mt-button slot="right"></mt-button>
         </mt-header>
-        <section >
-        <div>
-            <!-- 标题 -->
-           <div class="title">
-               <h4>{{ tests.type}}</h4>  
-           </div>
-        
-               <!-- 注意事项  -->
-            <div class='announce'>
-                <h5>注意事项</h5>
-                <p>1、考试时长：{{tests.totalTime}}分钟</p>
-                <p>2、试卷分值：{{tests.totalScore}}分</p>
-                <p>3、考察范围：{{tests.name}}</p>
-                <p v-if = 'have'>4、{{tests.otherRequire}}</p>
-            </div>
-               <!-- 表格 -->
-               <table>
-                   <thead>
-                       <td >题号</td>
-                       <td>一</td>
-                       <td>二</td>
-                       <td>三</td>
-                       <td>四</td>
-                       <td>五</td>
-                       <td>六</td>
-                       <td>总分</td>
-                   </thead>
-                   <tr>
-                       <td>得分</td>
-                       <td> </td>
-                       <td> </td>
-                       <td> </td>
-                       <td> </td>
-                       <td> </td>
-                       <td> </td>
-                       <td> </td>
-                   </tr>
-               </table>
-           
-           <!-- 题目区域 -->
-            <div class="totalEx" >
-                <!-- 大题型 -->
-                <div v-for = '(test , index) in tests.contents' class="exType">
-                    <h4>{{index+1 | getB}}、{{test.groupType}} ( {{test.groupNum}}题、共{{test.groupNum}}分 )</h4>
-                    <div class='mdlEx' v-for = 'mdlEx in test.exerciseShowList'>
-                        <div >
-                            {{mdlEx.id}}<span v-html = mdlEx.scene></span>
+        <section>
+            <div>
+                <!-- 标题 -->
+                <div class="title">
+                    <h4>第一课时-友谊</h4>
+                </div>
+
+                <!-- 诊断目标  -->
+                <div class='announce'>
+                    <h5>诊断目标</h5>
+                    <!-- 表格 -->
+                    <table>
+                        <thead>
+                            <td >知识点</td>
+                            <td colspan="5">认知水平</td> 
+                        </thead>
+                        <tr>  
+                            <td></td>
+                            <td>记忆</td>
+                            <td>理解</td>
+                            <td>运用</td>
+                            <td>分析</td>
+                            <td>创新</td>                            
+                        </tr>
+                        <tr>
+                            <td>函数的应用</td>
+                            <td> </td>
+                            <td> </td>
+                            <td> </td>
+                            <td> √</td>
+                            <td> </td>
+                        </tr>
+                        <tr>
+                            <td>集合的定义</td>
+                            <td> </td>
+                            <td> </td>
+                            <td> </td>
+                            <td> </td>
+                            <td> √</td>
+                        </tr>
+                    </table>
+                    <!-- 饼图 -->
+                    <canvas id="pie" width="300"  height="300" :getPie='picP()'></canvas>
+                </div>
+                
+                
+
+                <!-- 题目区域 -->
+                <div class="totalEx">
+                    <!-- 大题型 -->
+                    <div v-for='(test , index) in tests.contents' class="exType">
+                        <h4>{{index+1 | getB}}、{{test.groupType}} ( {{test.groupNum}}题、共{{test.groupNum}}分 )</h4>
+                        <div class='mdlEx' v-for='mdlEx in test.exerciseShowList'>
+                            <div>
+                                {{mdlEx.id}}
+                                <span v-html=mdlEx.scene></span>
+                            </div>
+                            <div v-for='ex in mdlEx.exerciseDTOList'>
+                                <span>{{ex.exerciseID}}.</span>
+                                <p v-html=ex.content></p>
+                                <div v-for='cho in ex.selectionList'>
+                                    <p>
+                                        <span>{{cho.name}}.</span>
+                                        <span v-html=cho.content></span>
+                                    </p>
+                                </div>
+                                <div class="detail">
+                                    <span class='detailT'>知识点:</span>
+                                    <span v-for='kn in ex.knowledgeCognizes'>
+                                        {{kn.knowledge}}//
+                                    </span>
+                                    <span class='detailT'>学科素养:</span>
+                                    <span v-for='kn in ex.scientificLiteracy'>
+                                        {{kn}}
+                                    </span>
+                                    <span class='detailT'>试题源:</span>
+                                    <span>
+                                        <span v-html=mdlEx.exerciseSource[0]></span>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                        <div v-for = 'ex in mdlEx.exerciseDTOList'>
-                            <span>{{ex.exerciseID}}.</span>
-                            <p v-html = ex.content></p>
-                            <div v-for = 'cho in ex.selectionList'>
-                                <p>
-                                    <span>{{cho.name}}.</span>
-                                    <span v-html = cho.content></span>
-                                </p>
-                            </div>
-                            <div class="detail">
-                                <span class='detailT'>知识点:</span>
-                                <span v-for = 'kn in ex.knowledgeCognizes' > 
-                                     {{kn.knowledge}}//
-                                </span>
-                                <span class='detailT'>学科素养:</span> 
-                                <span v-for='kn in ex.scientificLiteracy'>
-                                     {{kn}}
-                                </span>
-                                <span class='detailT'>试题源:</span>
-                                <span >
-                                     <span v-html = mdlEx.exerciseSource[0]></span>
-                                </span>
-                            </div>
-                        </div> 
                     </div>
                 </div>
             </div>
-        </div>
         </section>
     </div>
+    
 </body>
 
 <script src="./node_modules/vue/dist/vue.min.js"></script>
@@ -102,35 +112,68 @@
 <script src='./node_modules/axios/dist/axios.min.js'></script>
 <script>
     var vue = new Vue({
-        el:'#app',
-        data () {
-          return {
-              tests:{},
-              have:false,
-              
-          }
+        el: '#app',
+        data() {
+            return {
+                tests: {},
+            }
         },
-        created () {
+        created() {
             this.getExercises()
         },
-        methods: {           
-            getExercises () {
+        methods: {
+            getExercises() {
                 axios({
-                    url:'api/teacher/practice/1',
-                    method:'get',
+                    url: 'api/teacher/practice/1',
+                    method: 'get',
                     headers: {
                         Authorization: 'eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBdCI6MTUxMzIxNjg1OTg0MiwiZXhwIjoxNTEzMjE2ODU5LCJ1c2VySWQiOjEwMDM2LCJjcmVhdGVBdCI6MTUxMjYxMjA1OTg0Mn0.DvvKCYAETm06juAStzzKf-uK1IE10PWDQzqWePRWlYY'
                     }
                 }).then(res => {
-                    // var _this = this
-                  
                     this.tests = res.data.data
-                    console.log(this.tests)
+                })
+            },
+            picP() {
+                 var can1 = document.getElementById("pie");
+                var ctx = can1.getContext("2d");
+                var nums = [25,75];
+                var colors = ["#983335", "#77963f", "#5d437c", "#35859f", "#d1702f", "#365e96"];
+                var start = 0;
+                var end = 0;
+                ctx.translate(175, 150);
+                //绘制圆饼  
+                function pieChart() {
+                    for (var i = 0; i < nums.length; i++) {
+                        ctx.beginPath();
+                        ctx.moveTo(0, 0);
+                        end += nums[i] / 50 * Math.PI;//终止角度  
+                        ctx.strokeStyle = "white";
+                        ctx.fillStyle = colors[i];
+                        ctx.arc(0, 0, 100, start, end);
+                        ctx.fill();
+                        ctx.closePath();
+                        ctx.stroke();
+                        start += nums[i] / 50 * Math.PI;//起始角度  
+                    }
                     
-                }) 
+                }
+                //绘制圆饼上的数值  
+                function pieNum() {
+                    for (var i = 0; i < nums.length; i++) {
+                        start = nums[i] / 50 * Math.PI / 2;
+                        ctx.rotate(end + start);//旋转数值  
+                        ctx.font = "15px scans-serif";
+                        ctx.fillStyle =" #fff";
+                        ctx.fillText(nums[i] + "%"+  '知识点', 20, 0);
+                        end = nums[i] / 50 * Math.PI / 2;
+                        
+                    }
+                }
+                pieChart();
+                pieNum()
             }
         },
-         filters: {
+        filters: {
             getB(Num) {
                 for (i = Num.length - 1; i >= 0; i--) {
                     Num = Num.replace(" ", "")  //替换Num中的空格
@@ -195,8 +238,14 @@
             }
         }
     })
+    
 </script>
 <style>
+   canvas {
+       position: absolute;
+       top: 0;
+       right: 0;
+   }
     p {
         line-height: 1.5rem;
     }
@@ -205,25 +254,29 @@
         width: 50%;
         height: 50%;
     }
+
     .announce {
         margin-top: 1rem;
         line-height: 2rem;
+        position: relative;
     }
+
     table {
         margin-top: 1rem;
-        width: 80%;
+        width: 60%;
         border: 1px solid #EAEAEA;
-        border-collapse:collapse;
+        border-collapse: collapse;
     }
-    
+
     td {
-       text-align: center; 
-       border:1px solid #EAEAEA;
+        text-align: center;
+        border: 1px solid #EAEAEA;
     }
+
     tr {
         height: 2rem;
     }
-    
+
     .mint-header {
         height: 3rem;
         background-color: #13D3D7;
@@ -248,18 +301,21 @@
     .totalEx {
         margin-top: 1rem;
     }
+
     .exType {
         margin-bottom: 1rem;
         margin-top: 1rem;
         padding-bottom: 1rem;
         line-height: 2rem;
-        border-bottom: 1px solid #CCC;        
+        border-bottom: 1px solid #CCC;
     }
-    .mdlEx {
-    }
+
+    .mdlEx {}
+
     .detailT {
-        color:rgb(130, 131, 134);
+        color: rgb(130, 131, 134);
     }
+
     .smEx {
         margin-top: 0.5rem;
         font-size: 0.8rem;

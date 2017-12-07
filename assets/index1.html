@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>查看原题</title>
+    <meta name="keywords" content="demo"/>
+    <meta name="description" content="demo"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="format-detection" content="email=no"/>
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <!--<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>-->
+    <!--<meta http-equiv="Pragma" content="no-cache"/>-->
+    <!--<meta http-equiv="Expires" content="0"/>-->
+    <style>
+  /*根据设计要求设置根字体*/
+        html,body {
+                margin: 0;
+                padding: 0;
+        }
+        @media screen and (max-width: 320px) {
+            html {
+                font-size: 13px;
+            }
+        }
+        @media screen and (min-width: 320px) and (max-width: 374px) {
+            html {
+                font-size: 13px;
+            }
+        }
+        @media screen and (min-width: 374px) and (max-width: 413px) {
+            html {
+                font-size: 14px;
+            }
+        }
+        @media screen and (min-width: 413px) {
+            html {
+                font-size: 14px;
+            }
+        }
+        /*页面样式*/
+        .con-title{
+            width: 100%;
+            height: 66px;
+            background: #13D3D7;
+        }
+        .title-character{
+            padding: 0 20px;
+            cursor: pointer;
+        }
+        .span-c{
+            display: inline-block;
+            height: 66px;
+            line-height: 66px;
+            color: #fff;
+            font-size: 20px;
+        }
+        .c-button{
+            width:42px;
+            height:42px;
+            border-radius: 42px;
+            background: #13D3D7;
+            position: fixed;
+            right: 15px;
+            bottom: 50px;
+            cursor: pointer;
+            text-align: center;
+            padding-top: 4px;
+            box-sizing: border-box;
+        }
+        .sees{
+            width: 100%;
+            padding: 10px 10px;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+        .see-span{
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<div id="con">
+        <div class="con-title">
+            <div class="title-character">
+                <span><img src="img/tu1.PNG"  style="width:23px; height:23px;"></span>
+                <span class="span-c">查看原题</span>
+            </div>
+        </div>
+        <div id="see" class="sees">
+            <div class="see-con"  v-for="items in data">
+                <!--<span class="see-span" v-html="items.id"></span>-->
+                <span class="see-span" v-html="items.scene"></span>
+                <div v-for="item in items.exercises">
+                    <span class="see-span" v-html="item.no"></span>
+                    <span class="see-span" v-html="item.content" ></span>
+                    <div v-for="it in item.exerciseSelections">
+                        <span class="see-span" v-html="it.name" ></span>
+                        <span class="see-span" v-html="it.content" ></span>
+                    </div>
+                    <div class="con-analysis">
+                        <span class="see-span">解析：</span>
+                        <span class="see-span" v-html="item.analysis"></span>
+                    </div>
+                    <div class="con-points">
+                        <span class="see-span">分值：</span>
+                        <span class="see-span" v-html="item.points"></span>
+                    </div>
+                    <div class="con-answer">
+                        <span class="see-span">答案：</span>
+                        <span class="see-span" v-html="item.answer"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="c-button">
+           <img src="img/tu.PNG" style="width:35px;
+                             height:35px;
+                             border-radius: 35px;">
+        </div>
+</div>
+</body>
+<script src="./node_modules/vue/dist/vue.min.js"></script>
+<script src="./node_modules/axios/dist/axios.min.js"></script>
+<script>
+    new Vue({
+      
+    data:{
+       data:{}
+    },
+  created :function(){
+      this.getExercise()
+  },
+    methods:{
+     getExercise:function() {
+       axios({
+         url:'api/teacher/exercises/232',
+         method:'get',
+         headers:{
+           Authorization:'eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBdCI6MTUxMzIxNjg1OTg0MiwiZXhwIjoxNTEzMjE2ODU5LCJ1c2VySWQiOjEwMDM2LCJjcmVhdGVBdCI6MTUxMjYxMjA1OTg0Mn0.DvvKCYAETm06juAStzzKf-uK1IE10PWDQzqWePRWlYY'
+         }
+
+       }).then( res => {
+         var _this = this
+         _this.data = res.data.data
+       console.log(_this.data)
+     })
+     }
+    }
+
+  }).$mount('#con')
+</script>
+</html>

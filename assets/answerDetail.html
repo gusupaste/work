@@ -75,20 +75,19 @@
          return { 
            data: {},
            practiceId:[232],
-           studentId:[190]
+           studentId:[191]
                 }
         },
         created () {
           this.getExercise ()
         },
-        methods : {
-               getExercise() { 
-                
+        methods : {        
+               getExercise() {      
              axios({
                url: `api/teacher/all/${this.practiceId}/${this.studentId}`,
                method: 'get',
                headers: {
-                 Authorization: 'eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBdCI6MTUxMjk2Mzg1NjExNiwiZXhwIjoxNTEyOTYzODU2LCJ1c2VySWQiOjQzNCwiY3JlYXRlQXQiOjE1MTIzNTkwNTYxMTZ9.otEQObAXqdUXhjNQUZhy-OL4chj_rVt-7Y1zNPuFihA'
+               Authorization: 'eyJhbGciOiJIUzI1NiJ9.eyJleHBpcmVBdCI6MTUxMzIxNjg1OTg0MiwiZXhwIjoxNTEzMjE2ODU5LCJ1c2VySWQiOjEwMDM2LCJjcmVhdGVBdCI6MTUxMjYxMjA1OTg0Mn0.DvvKCYAETm06juAStzzKf-uK1IE10PWDQzqWePRWlYY'
                }
               })
                    .then( res => {

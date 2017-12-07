@@ -4,16 +4,25 @@ const express = require('express');
 const http = require('http');
 const httpProxy = require('http-proxy');
 const proxy = httpProxy.createProxyServer({});
-const base_url = 'http://120.55.45.184:3002/';
+const base_url = 'http://116.62.152.51:9005';
 
 
-const port =  process.env.PORT || 2000;
+const port =  process.env.PORT || 3000;
 const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', function response(req, res) {
     res.sendFile(path.join(__dirname, 'assets/answerDetail.html'));
+});
+app.get('/', function response(req, res) {
+    res.sendFile(path.join(__dirname, 'assets/exPaperDetail.html'));
+});
+app.get('/', function response(req, res) {
+    res.sendFile(path.join(__dirname, 'assets/index1.html'));
+});
+app.get('/', function response(req, res) {
+    res.sendFile(path.join(__dirname, 'assets/workDetail.html'));
 });
 
 app.use('/', express.static(__dirname + '/assets'));
